@@ -3,18 +3,14 @@ package main
 import (
 	"log"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 )
 
+
+// find how much calorie an elf is carrying
 func main() {
-	firstPuzzle()
-}
-
-func secondPuzzle() {
-}
-
-func firstPuzzle() {
 	data, err := readFileData("data.txt")
 	if err != nil {
 		log.Fatal(err)
@@ -24,11 +20,15 @@ func firstPuzzle() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	position := getElfPositionWithHighestCalorie(elves)
+	caloriesSorted := getSortedCalories(elves)
 
-	log.Println(position)
-	log.Println(elves[position])
+	firstElfTotalCalorie := getElfPositionWithHighestCalorie(caloriesSorted)
 
+	log.Println(elves[firstElfTotalCalorie])
+	log.Println(firstElfTotalCalorie)
+
+	topThreeTotal := getTotalCaloriesFromTopThree(caloriesSorted)
+	log.Println(topThreeTotal)
 }
 
 func readFileData(fileName string) ([]string, error) {
@@ -46,7 +46,7 @@ func parseData(data []string) (map[int]int, error) {
 	totCal := 0
 	for i, row := range data {
 		if row == "" || i == len(data) - 1 {
-			elves[position] = totCal
+			elves[totCal] = position
 			position += 1
 			totCal = 0
 		} else {
@@ -60,14 +60,33 @@ func parseData(data []string) (map[int]int, error) {
 	return elves, nil
 }
 
-func getElfPositionWithHighestCalorie(elves map[int]int) int {
-	biggest := 0
-	biggestPosition := 0
-	for position, cal := range elves {
-		if cal > biggest {
-			biggestPosition = position
-			biggest = cal
-		}
+func getSortedCalories(elves map[int]int) []int {
+	calories := make([]int, len(elves))
+	i := 0
+	for cal := range elves {
+		calories[i] = cal
+		i += 1
 	}
-	return biggestPosition
+
+	sort.SliceStable(calories, func(i, j int) bool {
+		return calories[i] > calories[j]
+	})
+
+	return calories
+}
+
+func getElfPositionWithHighestCalorie(calories []int) int {
+	return calories[0]
+}
+
+func getTotalCaloriesFromTopThree(calories []int) int {
+	if len(calories) < 3 {
+		return 0
+	}
+
+	first := calories[0]
+	second := calories[1]
+	third := calories[2]
+
+	return first + second + third
 }

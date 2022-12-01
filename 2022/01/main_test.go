@@ -41,7 +41,23 @@ func TestParseData(t *testing.T) {
 		t.Fatalf("Should have two keys got %v\n", len(elves))
 	}
 
-	if elves[1] != 60 {
+	if elves[60] != 1 {
 		t.Fatalf("Should have 60 got %v\n", elves[1])
+	}
+}
+
+func TestGetSortedCalories(t *testing.T) {
+	elves := map[int]int{200: 2, 120: 3, 500: 1, 70: 4}
+	sorted := getSortedCalories(elves)
+	if sorted[0] != 500 {
+		t.Fatalf("Wrong first element, should be 500 got %v\n", sorted[0])
+	}
+}
+
+func TestGetTotalCaloriesFromTopThree(t *testing.T) {
+	sorted := []int{200, 100, 50, 20}
+	total := getTotalCaloriesFromTopThree(sorted)
+	if total != 350 {
+		t.Fatalf("Wrong total, should be 350 got %v\n", total)
 	}
 }
