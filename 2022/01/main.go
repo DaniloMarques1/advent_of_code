@@ -8,7 +8,6 @@ import (
 	"strings"
 )
 
-
 // find how much calorie an elf is carrying
 func main() {
 	data, err := readFileData("data.txt")
@@ -45,7 +44,7 @@ func parseData(data []string) (map[int]int, error) {
 	position := 1
 	totCal := 0
 	for i, row := range data {
-		if row == "" || i == len(data) - 1 {
+		if row == "" || i == len(data)-1 {
 			elves[totCal] = position
 			position += 1
 			totCal = 0

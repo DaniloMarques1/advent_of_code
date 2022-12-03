@@ -20,7 +20,7 @@ func TestReadFileData(t *testing.T) {
 		t.Fatalf("Coult not write to file %v", err)
 	}
 
-	data, err :=  readFileData(fileName)
+	data, err := readFileData(fileName)
 	if err != nil {
 		t.Fatalf("Coult not write to file %v", err)
 	}
